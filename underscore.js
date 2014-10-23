@@ -29,7 +29,8 @@
   var
     nativeIsArray      = Array.isArray,
     nativeKeys         = Object.keys,
-    nativeBind         = FuncProto.bind;
+    nativeBind         = FuncProto.bind,
+    nativeCreate       = Object.create;
 
   // Create a safe reference to the Underscore object for use below.
   var _ = function(obj) {
@@ -107,6 +108,23 @@
       return obj;
     };
   };
+
+  // An internal function for creating a new object that inherts from another.
+  var baseCreate = nativeCreate || (function() {
+    function Object() {}
+
+    return function(prototype) {
+      var result;
+
+      if (_.isObject(prototype)) {
+        Object.prototype = prototype;
+        result = new Object;
+        Object.prototype = null;
+      }
+
+      return result || {};
+    };
+  }());
 
   // Collection Functions
   // --------------------
@@ -1022,6 +1040,14 @@
       }
     }
     return obj;
+  };
+
+  // Creates an object that inherits from the given prototype object.
+  // If additional properties are provided then they will be added to the
+  // created object.
+  _.create = function(prototype, props) {
+    var result = baseCreate(prototype);
+    return props ? _.extend(result, props) : result;
   };
 
   // Create a (shallow-cloned) duplicate of an object.

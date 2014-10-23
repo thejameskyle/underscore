@@ -270,6 +270,19 @@
     equal(_.clone(null), null, 'non objects should not be changed by clone');
   });
 
+  test('create', function() {
+    var Parent = function() {};
+    Parent.prototype = {foo: function() {}, bar: 2};
+
+    var Child = function() {};
+    Child.prototype = _.create(Parent.prototype);
+    ok(new Child instanceof Parent, 'object should inherit prototype');
+
+    var func = function() {};
+    Child.prototype = _.create(Parent.prototype, {func: func});
+    strictEqual(Child.prototype.func, func, 'properties should be added to object');
+  });
+
   test('isEqual', function() {
     function First() {
       this.value = 1;
