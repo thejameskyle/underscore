@@ -32,6 +32,9 @@
     nativeBind         = FuncProto.bind,
     nativeCreate       = Object.create;
 
+  // Reusable constructor function for prototype setting.
+  var Ctor = function(){};
+
   // Create a safe reference to the Underscore object for use below.
   var _ = function(obj) {
     if (obj instanceof _) return obj;
@@ -112,21 +115,17 @@
   // An internal function for creating a new object that inherts from another.
   var baseCreate = nativeCreate ? function(prototype) {
     return _.isObject(prototype) ? nativeCreate(prototype) : {};
-  } : (function() {
-    function Object() {}
+  } : function(prototype) {
+    var result;
 
-    return function(prototype) {
-      var result;
+    if (_.isObject(prototype)) {
+      Ctor.prototype = prototype;
+      result = new Ctor;
+      Ctor.prototype = null;
+    }
 
-      if (_.isObject(prototype)) {
-        Object.prototype = prototype;
-        result = new Object;
-        Object.prototype = null;
-      }
-
-      return result || {};
-    };
-  }());
+    return result || {};
+  };
 
   // Collection Functions
   // --------------------
@@ -687,9 +686,6 @@
 
   // Function (ahem) Functions
   // ------------------
-
-  // Reusable constructor function for prototype setting.
-  var Ctor = function(){};
 
   // Determines whether to execute a function as a constructor
   // or a normal function with the provided arguments
