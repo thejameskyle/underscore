@@ -281,6 +281,8 @@
     var func = function() {};
     Child.prototype = _.create(Parent.prototype, {func: func});
     strictEqual(Child.prototype.func, func, 'properties should be added to object');
+
+    deepEqual(_.create(null), {}, 'should return empty object when a non-object is provided');
   });
 
   test('isEqual', function() {

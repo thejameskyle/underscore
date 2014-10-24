@@ -110,7 +110,9 @@
   };
 
   // An internal function for creating a new object that inherts from another.
-  var baseCreate = nativeCreate || (function() {
+  var baseCreate = nativeCreate ? function(prototype) {
+    return _.isObject(prototype) ? nativeCreate(prototype) : {};
+  } : (function() {
     function Object() {}
 
     return function(prototype) {
