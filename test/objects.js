@@ -286,6 +286,10 @@
 
     Child.prototype = _.create(Parent.prototype, {constructor: Child});
     strictEqual(Child.prototype.constructor, Child);
+
+    Child.prototype.foo = 'foo';
+    var created = _.create(Child.prototype, new Child);
+    ok(!created.hasOwnProperty('foo'), 'should only add own properties');
   });
 
   test('isEqual', function() {

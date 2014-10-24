@@ -1043,7 +1043,16 @@
   // created object.
   _.create = function(prototype, props) {
     var result = baseCreate(prototype);
-    return props ? _.extend(result, props) : result;
+    if (props) {
+      var keys = _.keys(props),
+          length = keys.length,
+          i, key;
+      for (i = 0; i < length; i++) {
+        key = keys[i];
+        result[key] = props[key];
+      }
+    }
+    return result;
   };
 
   // Create a (shallow-cloned) duplicate of an object.
