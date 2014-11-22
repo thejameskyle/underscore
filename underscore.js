@@ -1043,15 +1043,7 @@
   // created object.
   _.create = function(prototype, props) {
     var result = baseCreate(prototype);
-    if (props) {
-      var keys = _.keys(props),
-          length = keys.length,
-          i, key;
-      for (i = 0; i < length; i++) {
-        key = keys[i];
-        result[key] = props[key];
-      }
-    }
+    if (props) _.assign(result, props);
     return result;
   };
 
