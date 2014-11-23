@@ -1042,9 +1042,7 @@
   // If additional properties are provided then they will be added to the
   // created object.
   _.create = function(prototype, props) {
-    var result = baseCreate(prototype);
-    if (props) _.assign(result, props);
-    return result;
+    return _.assign(baseCreate(prototype), props);
   };
 
   // Create a (shallow-cloned) duplicate of an object.
